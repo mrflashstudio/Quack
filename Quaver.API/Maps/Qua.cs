@@ -31,7 +31,7 @@ namespace Quaver.API.Maps
                 string line = lines[i];
 
                 string[] lineSplit = line.Split(new char[] { ':' }, 2);
-                string variable = lineSplit[0].TrimStart(new char[] { '-' }).Trim();
+                string variable = lineSplit[0].Trim().TrimStart(new char[] { '-' }).Trim();
                 string value = lineSplit[1].Trim();
 
                 if (variable == "HitObjects")
@@ -58,7 +58,7 @@ namespace Quaver.API.Maps
                         var ho = new HitObject();
                         ho.StartTime = int.Parse(value);
                         ho.Lane = int.Parse(lines[++i].Split(new char[] { ':' }, 2)[1].Trim());
-                        if (lines[i + 1].Contains("EndTime"))
+                        if (i + 1 < lines.Length && lines[i + 1].Contains("EndTime"))
                             ho.EndTime = int.Parse(lines[++i].Split(new char[] { ':' }, 2)[1].Trim());
 
                         parsedMap.HitObjects.Add(ho);

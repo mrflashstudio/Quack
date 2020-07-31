@@ -65,11 +65,18 @@ namespace Quaver.API
 
             QuaverDirectory = Path.GetDirectoryName(Process.Process.MainModule.FileName);
 
-            if (!Process.FindPattern(Signatures.QuaverBase.Pattern, out UIntPtr quaverBasePointer))
-                return false;
+            try
+            {
+                if (!Process.FindPattern(Signatures.QuaverBase.Pattern, out UIntPtr quaverBasePointer))
+                    return false;
 
-            QuaverBase = new QuaverBase((UIntPtr)Process.ReadUInt64(quaverBasePointer + Signatures.QuaverBase.Offset));
-            ConfigManager = new QuaverConfigManager($@"{QuaverDirectory}\quaver.cfg");
+                QuaverBase = new QuaverBase((UIntPtr)Process.ReadUInt64(quaverBasePointer + Signatures.QuaverBase.Offset));
+                ConfigManager = new QuaverConfigManager($@"{QuaverDirectory}\quaver.cfg");
+            }
+            catch
+            {
+                return false;
+            }
 
             return true;
         }
