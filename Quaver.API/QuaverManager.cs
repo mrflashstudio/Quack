@@ -70,7 +70,7 @@ namespace Quaver.API
                 if (!Process.FindPattern(Signatures.QuaverBase.Pattern, out UIntPtr quaverBasePointer))
                     return false;
 
-                QuaverBase = new QuaverBase((UIntPtr)Process.ReadUInt64(quaverBasePointer + Signatures.QuaverBase.Offset));
+                QuaverBase = new QuaverBase(quaverBasePointer + Signatures.QuaverBase.Offset);
                 ConfigManager = new QuaverConfigManager($@"{QuaverDirectory}\quaver.cfg");
             }
             catch
