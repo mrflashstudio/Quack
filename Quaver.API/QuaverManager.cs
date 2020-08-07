@@ -6,13 +6,16 @@ using Quaver.API.Memory.Processes;
 using SimpleDependencyInjection;
 using System;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace Quaver.API
 {
     public class QuaverManager
     {
-        public QuaverProcess Process { get; private set; }
+        public QuaverProcess QuaverProcess { get; private set; }
 
         public QuaverBase QuaverBase { get; private set; }
 
@@ -54,20 +57,28 @@ namespace Quaver.API
         {
             Console.WriteLine("Initializing...");
 
-            var processes = System.Diagnostics.Process.GetProcessesByName("Quaver");
-            if (processes.Length == 0)
-                Environment.Exit(0);
+            var quaverProcess = Process.GetProcessesByName("Quaver").FirstOrDefault();
+            if (quaverProcess == null)
+            {
+                Console.WriteLine("\nWaiting for Quaver...");
 
-            Process = new QuaverProcess(processes[0]);
-            Process.Process.EnableRaisingEvents = true;
-            Process.Process.Exited += (o, e) => Environment.Exit(1);
-            DependencyContainer.Cache(Process);
+                while (quaverProcess == null)
+                {
+                    quaverProcess = Process.GetProcessesByName("Quaver").FirstOrDefault();
+                    Thread.Sleep(1500);
+                }
+            }
 
-            QuaverDirectory = Path.GetDirectoryName(Process.Process.MainModule.FileName);
+            QuaverProcess = new QuaverProcess(quaverProcess);
+            QuaverProcess.Process.EnableRaisingEvents = true;
+            QuaverProcess.Process.Exited += (o, e) => Environment.Exit(1);
+            DependencyContainer.Cache(QuaverProcess);
+
+            QuaverDirectory = Path.GetDirectoryName(QuaverProcess.Process.MainModule.FileName);
 
             try
             {
-                if (!Process.FindPattern(Signatures.QuaverBase.Pattern, out UIntPtr quaverBasePointer))
+                if (!QuaverProcess.FindPattern(Signatures.QuaverBase.Pattern, out UIntPtr quaverBasePointer))
                     return false;
 
                 QuaverBase = new QuaverBase(quaverBasePointer + Signatures.QuaverBase.Offset);
