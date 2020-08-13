@@ -1,8 +1,6 @@
 ﻿using Quaver.API.Enums.Maps;
 using Quaver.API.Maps;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Quaver.API.Memory.Objects
 {

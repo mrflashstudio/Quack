@@ -1,11 +1,9 @@
 ﻿using Quaver.API.Configuration;
-using Quaver.API.Maps;
 using Quaver.API.Memory;
 using Quaver.API.Memory.Objects;
 using Quaver.API.Memory.Processes;
 using SimpleDependencyInjection;
 using System;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
