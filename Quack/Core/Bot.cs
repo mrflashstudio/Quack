@@ -1,4 +1,5 @@
 ﻿using Quack.Configuration;
+using Quack.Helpers;
 using Quaver.API;
 using Quaver.API.Configuration.Enums;
 using Quaver.API.Enums.Maps;
@@ -6,7 +7,6 @@ using Quaver.API.Replays;
 using SimpleDependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -54,7 +54,7 @@ namespace Quack.Core
                     index++;
                 }
 
-                Thread.Sleep(1);
+                TimingHelper.Delay(1);
             }
 
             releaseAllKeys();
