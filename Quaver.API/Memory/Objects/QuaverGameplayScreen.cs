@@ -12,6 +12,8 @@ namespace Quaver.API.Memory.Objects
 
         public QuaverRuleset Ruleset { get; private set; }
 
+        public string CurrentMapChecksum => QuaverProcess.ReadString(BaseAddress + 0x70, true);
+
         public Qua CurrentMap
         {
             get
@@ -26,7 +28,7 @@ namespace Quaver.API.Memory.Objects
                 qua.Artist = QuaverProcess.ReadString(mapsetPointer + 0x28, true);
                 qua.Creator = QuaverProcess.ReadString(mapsetPointer + 0x40, true);
                 qua.DifficultyName = QuaverProcess.ReadString(mapsetPointer + 0x48, true);
-                qua.Checksum = QuaverProcess.ReadString(BaseAddress + 0x70, true);
+                qua.Checksum = CurrentMapChecksum;
 
                 //hitobjects
                 var hitObjectsList = (UIntPtr)QuaverProcess.ReadUInt64(mapsetPointer + 0x88);

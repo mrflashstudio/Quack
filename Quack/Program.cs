@@ -20,6 +20,17 @@ namespace Quack
 
         private static Replay replay;
 
+        private static bool canLoad
+        {
+            get
+            {
+                if (quaverManager.QuaverBase.GameplayScreen.IsLoaded)
+                    return currentBotMode == BotMode.AutoplayReplay || replay.MapMd5 == quaverManager.QuaverBase.GameplayScreen.CurrentMapChecksum;
+
+                return false;
+            }
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -53,7 +64,7 @@ namespace Quack
 
             if (currentBotMode == BotMode.None)
                 drawModeSelection();
-            else if (quaverManager.QuaverBase.GameplayScreen.IsLoaded)
+            else if (canLoad)
             {
                 configManager.RefreshConfig();
                 quaverManager.ConfigManager.RefreshConfig();
@@ -72,7 +83,7 @@ namespace Quack
                 Console.WriteLine("\n\n~ Waiting for player...");
                 Console.WriteLine("\n~ Press ESC to change mode.");
 
-                while (!quaverManager.QuaverBase.GameplayScreen.IsLoaded && !Console.KeyAvailable)
+                while (!canLoad && !Console.KeyAvailable)
                     Thread.Sleep(150);
 
                 if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)
