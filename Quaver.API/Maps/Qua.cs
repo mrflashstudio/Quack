@@ -17,7 +17,9 @@ namespace Quaver.API.Maps
 
         public string DifficultyName { get; set; }
 
-        public List<HitObject> HitObjects { get; private set; } = new List<HitObject>();
+        public string Checksum { get; set; }
+
+        public List<HitObject> HitObjects { get; set; } = new List<HitObject>();
 
         public static Qua Parse(string filePath)
         {

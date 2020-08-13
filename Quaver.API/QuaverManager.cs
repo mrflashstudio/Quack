@@ -21,36 +21,6 @@ namespace Quaver.API
 
         public QuaverConfigManager ConfigManager { get; private set; }
 
-        public Qua CurrentMap
-        {
-            get
-            {
-                if (!QuaverBase.GameplayScreen.IsLoaded)
-                    return null;
-
-                using (var connection = new SQLiteConnection($@"Data Source={QuaverDirectory}\quaver.db;Version=3;"))
-                {
-                    connection.Open();
-
-                    string checksum = QuaverBase.GameplayScreen.CurrentMapChecksum;
-
-                    string commandText = $"SELECT * FROM Map WHERE md5checksum = '{checksum}'";
-
-                    using (SQLiteCommand sqliteCommand = new SQLiteCommand(commandText, connection))
-                    {
-                        using (SQLiteDataReader reader = sqliteCommand.ExecuteReader())
-                        {
-                            reader.Read();
-                            string directory = reader.GetString(2);
-                            string path = reader.GetString(3);
-
-                            return Qua.Parse($@"{ConfigManager.SongsDirectory}\{directory}\{path}");
-                        }
-                    }
-                }
-            }
-        }
-
         public string QuaverDirectory { get; private set; }
 
         public bool Initialize()

@@ -149,10 +149,10 @@ namespace Quaver.API.Memory.Processes
         public string ReadString(UIntPtr address, bool multiply = false, Encoding encoding = null)
         {
             encoding = encoding ?? Encoding.UTF8;
-            UIntPtr stringAddress = (UIntPtr)ReadUInt32(address);
-            int length = ReadInt32(stringAddress + 0x4) * (multiply ? 2 : 1);
+            UIntPtr stringAddress = (UIntPtr)ReadUInt64(address);
+            int length = ReadInt32(stringAddress + 0x8) * (multiply ? 2 : 1);
 
-            return encoding.GetString(ReadMemory(stringAddress + 0x8, (uint)length)).Replace("\0", string.Empty);
+            return encoding.GetString(ReadMemory(stringAddress + 0xC, (uint)length)).Replace("\0", string.Empty);
         }
 
         private unsafe bool findMatch(Pattern pattern, byte[] buffer, out UIntPtr result)

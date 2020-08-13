@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Quaver.API.Enums.Maps;
+using Quaver.API.Maps;
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Quaver.API.Memory.Objects
@@ -11,14 +14,43 @@ namespace Quaver.API.Memory.Objects
 
         public QuaverRuleset Ruleset { get; private set; }
 
-        public string CurrentMapChecksum
+        public Qua CurrentMap
         {
             get
             {
-                UIntPtr md5Pointer = (UIntPtr)QuaverProcess.ReadUInt64(BaseAddress + 0x70);
-                uint md5Length = QuaverProcess.ReadUInt32(md5Pointer + 0x8) * 2;
+                var qua = new Qua();
 
-                return Encoding.Unicode.GetString(QuaverProcess.ReadMemory(md5Pointer + 0xC, md5Length));
+                var mapsetPointer = (UIntPtr)QuaverProcess.ReadUInt64(BaseAddress + 0x58);
+
+                //metadata
+                qua.Mode = (GameMode)QuaverProcess.ReadInt32(mapsetPointer + 0x9c);
+                qua.Title = QuaverProcess.ReadString(mapsetPointer + 0x20, true);
+                qua.Artist = QuaverProcess.ReadString(mapsetPointer + 0x28, true);
+                qua.Creator = QuaverProcess.ReadString(mapsetPointer + 0x40, true);
+                qua.DifficultyName = QuaverProcess.ReadString(mapsetPointer + 0x48, true);
+                qua.Checksum = QuaverProcess.ReadString(BaseAddress + 0x70, true);
+
+                //hitobjects
+                var hitObjectsList = (UIntPtr)QuaverProcess.ReadUInt64(mapsetPointer + 0x88);
+                var hitObjectsElements = (UIntPtr)QuaverProcess.ReadUInt64(hitObjectsList + 0x8);
+                int count = QuaverProcess.ReadInt32(hitObjectsElements + 0x8);
+                for (int i = 0; i < count; i++)
+                {
+                    var currentElement = (UIntPtr)QuaverProcess.ReadUInt64(hitObjectsElements + 0x10 + 0x8 * i);
+
+                    int lane = QuaverProcess.ReadInt32(currentElement + 0x14);
+                    int startTime = QuaverProcess.ReadInt32(currentElement + 0x10);
+                    int endTime = QuaverProcess.ReadInt32(currentElement + 0x18);
+
+                    qua.HitObjects.Add(new HitObject
+                    {
+                        Lane = lane,
+                        StartTime = startTime,
+                        EndTime = endTime
+                    });
+                }
+
+                return qua;
             }
         }
 

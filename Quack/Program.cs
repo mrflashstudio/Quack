@@ -53,12 +53,12 @@ namespace Quack
 
             if (currentBotMode == BotMode.None)
                 drawModeSelection();
-            else if (quaverManager.QuaverBase.GameplayScreen.IsLoaded && (currentBotMode == BotMode.AutoplayReplay || replay.MapMd5 == quaverManager.QuaverBase.GameplayScreen.CurrentMapChecksum))
+            else if (quaverManager.QuaverBase.GameplayScreen.IsLoaded)
             {
                 configManager.RefreshConfig();
                 quaverManager.ConfigManager.RefreshConfig();
 
-                var map = quaverManager.CurrentMap;
+                var map = quaverManager.QuaverBase.GameplayScreen.CurrentMap;
 
                 if (currentBotMode == BotMode.AutoplayReplay)
                     replay = Replay.GenerateAutoplayReplay(map);
