@@ -16,14 +16,14 @@ namespace Quack.Helpers
 
         private static AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 
+        private static TimerCallback callback = (uTimerID, msg, dwUser, dw1, dw2) => autoResetEvent.Set();
+
         public static void Delay(uint milliseconds)
         {
-            uint timer = timeSetEvent(milliseconds, 0, callbackFunction, UIntPtr.Zero, 0);
+            uint timer = timeSetEvent(milliseconds, 0, callback, UIntPtr.Zero, 0);
 
             autoResetEvent.WaitOne();
             timeKillEvent(timer);
         }
-
-        private static void callbackFunction(uint uTimerID, uint msg, UIntPtr dwUser, UIntPtr dw1, UIntPtr dw2) => autoResetEvent.Set();
     }
 }
