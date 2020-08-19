@@ -66,10 +66,6 @@ namespace Quack.Updater
             ZipFile.ExtractToDirectory($@"_temp\{release.assets[0].name}", @"_temp");
             File.Delete($@"_temp\{release.assets[0].name}");
 
-            string executableFilename = Path.GetFileName(Environment.GetCommandLineArgs()[0]);
-            File.Move(@"_temp\Quack.exe", $@"_temp\{executableFilename}");
-            File.Move(@"_temp\Quack.runtimeconfig.json", $@"_temp\{Path.GetFileNameWithoutExtension(executableFilename)}.runtimeconfig.json");
-
             var mainDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             foreach (var file in mainDirectoryInfo.GetFiles())
                 if (file.Extension != ".ini")
@@ -84,7 +80,7 @@ namespace Quack.Updater
             Console.WriteLine("Restarting in 3 seconds...");
 
             Thread.Sleep(3000);
-            Process.Start(Environment.GetCommandLineArgs()[0]);
+            Process.Start("Quack.exe");
             Environment.Exit(0);
         }
 
