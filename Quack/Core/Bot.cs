@@ -31,6 +31,7 @@ namespace Quack.Core
         {
             currentReplay = replay;
 
+            double lastTime = quaverManager.QuaverBase.GameplayScreen.GameplayAudioTiming.Time + configManager.AudioOffset;
             int keyCount = currentReplay.Mode == GameMode.Keys4 ? 4 : 7;
 
             var replayKeys = new List<int>();
@@ -41,6 +42,11 @@ namespace Quack.Core
             while (quaverManager.QuaverBase.GameplayScreen.IsLoaded && index < currentReplay.Frames.Count)
             {
                 double currentTime = quaverManager.QuaverBase.GameplayScreen.GameplayAudioTiming.Time + configManager.AudioOffset;
+                if (Math.Abs(currentTime - lastTime) >= 50)
+                    break;
+
+                lastTime = currentTime;
+
                 if (currentTime >= currentReplay.Frames[index].Time)
                 {
                     var keyState = Replay.KeyPressStateToLanes(currentReplay.Frames[index].Keys);
