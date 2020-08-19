@@ -75,9 +75,6 @@ namespace Quack.Updater
                 if (file.Extension != ".ini")
                     file.MoveTo($"{file.Name}.old");
 
-            foreach (var dir in mainDirectoryInfo.GetDirectories())
-                dir.MoveTo($"{dir.Name}_old");
-
             var tempDirectoryInfo = new DirectoryInfo(@"_temp");
             foreach (var file in tempDirectoryInfo.GetFiles())
                 file.MoveTo(file.Name);
@@ -97,10 +94,6 @@ namespace Quack.Updater
             foreach (var file in mainDirectoryInfo.GetFiles())
                 if (file.Extension == ".old")
                     file.Delete();
-
-            foreach (var dir in mainDirectoryInfo.GetDirectories())
-                if (dir.Name.EndsWith("_old"))
-                    dir.Delete(true);
 
             if (Directory.Exists(@"_temp"))
                 Directory.Delete(@"_temp", true);
