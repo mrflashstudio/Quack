@@ -1,6 +1,7 @@
 ﻿using Quack.Configuration;
 using Quack.Core;
 using Quaver.API;
+using Quaver.API.Enums;
 using Quaver.API.Replays;
 using SimpleDependencyInjection;
 using System;
@@ -71,12 +72,15 @@ namespace Quack
 
                 var map = quaverManager.QuaverBase.GameplayScreen.CurrentMap;
 
+                var mods = quaverManager.QuaverBase.GameplayScreen.Ruleset.ScoreProcessor.CurrentMods;
+                bool flipInputs = currentBotMode == BotMode.UserReplay && (Mods)Math.Abs(replay.Mods - mods) == Mods.Mirror;
+
                 if (currentBotMode == BotMode.AutoplayReplay)
                     replay = Replay.GenerateAutoplayReplay(map);
 
                 Console.WriteLine($"\n\n~ Playing{(currentBotMode == BotMode.UserReplay ? $" {replay.PlayerName}'s replay on" : string.Empty)} {map.Artist} - {map.Title} [{map.DifficultyName}] by {map.Creator}");
 
-                bot.Start(replay);
+                bot.Start(replay, flipInputs);
             }
             else
             {

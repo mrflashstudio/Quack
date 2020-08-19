@@ -1,4 +1,5 @@
-﻿using Quaver.API.Enums.Maps;
+﻿using Quaver.API.Enums;
+using Quaver.API.Enums.Maps;
 using Quaver.API.Maps;
 using Quaver.API.Replays.SevenZip;
 using System;
@@ -13,6 +14,8 @@ namespace Quaver.API.Replays
     {
         public GameMode Mode { get; set; }
 
+        public Mods Mods { get; set; }
+
         public List<ReplayFrame> Frames { get; set; }
 
         public string ReplayVersion { get; set; }
@@ -22,11 +25,6 @@ namespace Quaver.API.Replays
         public string MapMd5 { get; set; }
 
         public int RandomizeModifierSeed { get; set; } = -1;
-
-        public void Flip() //todo: implement
-        {
-            throw new NotImplementedException();
-        }
 
         public static Replay Parse(string filePath)
         {
@@ -44,11 +42,10 @@ namespace Quaver.API.Replays
 
                 parsedReplay.Mode = (GameMode)br.ReadInt32();
 
-                //mods
                 if (parsedReplay.ReplayVersion == "0.0.1" || parsedReplay.ReplayVersion == "None")
-                    br.ReadInt32();
+                    parsedReplay.Mods = (Mods)br.ReadInt32();
                 else
-                    br.ReadInt64();
+                    parsedReplay.Mods = (Mods)br.ReadInt64();
 
                 br.ReadBytes(40);
 

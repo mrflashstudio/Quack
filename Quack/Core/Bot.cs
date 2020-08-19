@@ -27,12 +27,14 @@ namespace Quack.Core
             input = new InputSimulator();
         }
 
-        public void Start(Replay replay)
+        public void Start(Replay replay, bool flipInputs)
         {
             currentReplay = replay;
 
+            int keyCount = currentReplay.Mode == GameMode.Keys4 ? 4 : 7;
+
             var replayKeys = new List<int>();
-            for (int i = 0; i < (currentReplay.Mode == GameMode.Keys4 ? 4 : 7); i++)
+            for (int i = 0; i < keyCount; i++)
                 replayKeys.Add(i);
 
             int index = nearestFrameIndex(quaverManager.QuaverBase.GameplayScreen.GameplayAudioTiming.Time);
@@ -44,7 +46,7 @@ namespace Quack.Core
                     var keyState = Replay.KeyPressStateToLanes(currentReplay.Frames[index].Keys);
                     for (int i = 0; i < replayKeys.Count; i++)
                     {
-                        var key = getKeyByLaneIndex(replayKeys[i]);
+                        var key = getKeyByLaneIndex(flipInputs ? keyCount - 1 - replayKeys[i] : replayKeys[i]);
                         if (keyState.Contains(replayKeys[i]))
                             input.Keyboard.KeyDown(key);
                         else
