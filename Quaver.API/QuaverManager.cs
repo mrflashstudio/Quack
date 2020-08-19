@@ -23,6 +23,7 @@ namespace Quaver.API
 
         public bool Initialize()
         {
+            Console.Clear();
             Console.WriteLine("Initializing...");
 
             var quaverProcess = Process.GetProcessesByName("Quaver").FirstOrDefault();

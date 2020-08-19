@@ -44,8 +44,8 @@ namespace Quack.Core
                 double currentTime = quaverManager.QuaverBase.GameplayScreen.GameplayAudioTiming.Time + configManager.AudioOffset;
                 if (Math.Abs(currentTime - lastTime) >= 50)
                     break;
-
-                lastTime = currentTime;
+                else
+                    lastTime = currentTime;
 
                 if (currentTime >= currentReplay.Frames[index].Time)
                 {

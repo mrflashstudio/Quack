@@ -12,6 +12,8 @@ namespace Quack
 {
     class Program
     {
+        private static Updater.Updater updater;
+
         private static QuaverManager quaverManager;
         private static ConfigManager configManager;
 
@@ -36,6 +38,22 @@ namespace Quack
         static void Main(string[] args)
         {
             Console.Title = "Quack";
+
+            updater = new Updater.Updater();
+
+            try
+            {
+                updater.CheckForUpdates();
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.WriteLine("Checking for updates failed!");
+                Console.WriteLine("Please report this on GitHub!");
+                Console.WriteLine($"\nERROR: {ex}");
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey(true);
+            }
 
             quaverManager = new QuaverManager();
             if (!quaverManager.Initialize())
@@ -138,7 +156,7 @@ namespace Quack
             Console.WriteLine("                    ██████      ");
             Console.WriteLine("                  ██      ██    ");
             Console.WriteLine("                ██          ██  ");
-            Console.WriteLine("                ██      ██  ██      Quack v1.0.0 by mrflashstudio");
+            Console.WriteLine($"                ██      ██  ██      Quack v{updater.CurrentVersion} by mrflashstudio");
             Console.WriteLine("                ██        ░░░░██  ~");
             Console.WriteLine("                  ██      ████      The best and only *yet* Quaver multihack");
             Console.WriteLine("    ██              ██  ██      ");
