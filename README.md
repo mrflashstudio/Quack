@@ -11,7 +11,7 @@ A Quaver multihack
 - Start playing!
 
 ### Requirements
-- .net core 3.0 runtime is required to run Quack. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.0).  
+- .net core 3.0 runtime is required to run Quack. You can download it [here](https://dotnet.microsoft.com/download/dotnet/3.1).  
 
 ### Important notes
 - If you see something like *"Unhandled exception: System.IO.FileNotFoundException: ..."* follow these steps:
