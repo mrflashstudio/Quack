@@ -5,6 +5,7 @@ using Quaver.API.Enums;
 using Quaver.API.Replays;
 using SimpleDependencyInjection;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,6 +13,10 @@ namespace Quack
 {
     class Program
     {
+        [DllImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        
         private static Updater.Updater updater;
 
         private static QuaverManager quaverManager;
@@ -37,6 +42,8 @@ namespace Quack
         [STAThread]
         static void Main(string[] args)
         {
+            AllocConsole();
+            
             Console.Title = "Quack";
 
             updater = new Updater.Updater();

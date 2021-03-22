@@ -67,7 +67,10 @@ namespace Quaver.API.Memory.Processes
             {
                 //if ((ulong)region.BaseAddress < (ulong)quaverModuleBaseAddress)
                 //    continue;
-
+                
+                if (region.RegionSize.ToUInt64() > uint.MaxValue)
+                    continue;
+                
                 byte[] buffer = ReadMemory(region.BaseAddress, region.RegionSize.ToUInt32());
                 if (findMatch(parsedPattern, buffer, out UIntPtr match))
                 {
