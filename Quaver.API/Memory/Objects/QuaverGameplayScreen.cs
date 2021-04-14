@@ -23,7 +23,7 @@ namespace Quaver.API.Memory.Objects
                 var mapsetPointer = (UIntPtr)QuaverProcess.ReadUInt64(BaseAddress + 0x58);
 
                 //metadata
-                qua.Mode = (GameMode)QuaverProcess.ReadInt32(mapsetPointer + 0x9c);
+                qua.Mode = (GameMode)QuaverProcess.ReadInt32(mapsetPointer + 0xA4);
                 qua.Title = QuaverProcess.ReadString(mapsetPointer + 0x20, true);
                 qua.Artist = QuaverProcess.ReadString(mapsetPointer + 0x28, true);
                 qua.Creator = QuaverProcess.ReadString(mapsetPointer + 0x40, true);
