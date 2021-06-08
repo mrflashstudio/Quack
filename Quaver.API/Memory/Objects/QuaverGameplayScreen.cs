@@ -6,7 +6,7 @@ namespace Quaver.API.Memory.Objects
 {
     public class QuaverGameplayScreen : QuaverObject
     {
-        public override bool IsLoaded => base.IsLoaded && QuaverProcess.ReadInt32(BaseAddress + 0xE8) == 2;// && QuaverProcess.ReadBool(BaseAddress + 0x20C);
+        public override bool IsLoaded => base.IsLoaded && QuaverProcess.ReadInt32(BaseAddress + 0xF0) == 2;// && QuaverProcess.ReadBool(BaseAddress + 0x20C);
 
         public QuaverGameplayAudioTiming GameplayAudioTiming { get; private set; }
 
