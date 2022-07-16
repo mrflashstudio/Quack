@@ -1,5 +1,5 @@
 # Quack
-A Quaver multihack
+A Quaver multihack for educational use only. In it's current state this program is detected, and you will get banned for using it online.
 
 ## Running Quack
 **Download [latest build from releases](https://github.com/mrflashstudio/Quack/releases/latest).**  
